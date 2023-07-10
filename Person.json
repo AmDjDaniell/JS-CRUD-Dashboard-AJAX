@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Leanne",
+        "email": "leanne@gmail.biz",
+        "address": {
+            "street": "Kulas Light",
+            "suite": "Apt. 556",
+            "city": "Gwenborough"
+        },
+        "age": "30",
+        "cnic": "736-8031-56442",
+        "phone": "1-770-736-8031 56442"
+    },
+    {
+        "id": 2,
+        "name": "Ervin Howell",
+        "username": "Ervin",
+        "email": "ervin@gmail.biz",
+        "address": {
+            "street": "Victor Plains",
+            "suite": "Suite 879",
+            "city": "Wisokyburgh"
+        },
+        "age": "29",
+        "cnic": "692-6593-09125",
+        "phone": "010-692-6593 x09125"
+    },
+    {
+        "id": 3,
+        "name": "Clementine Bauch",
+        "username": "Clementine",
+        "email": "clementine@gmail.biz",
+        "address": {
+            "street": "Douglas Extension",
+            "suite": "Suite 847",
+            "city": "McKenziehaven"
+        },
+        "age": "25",
+        "cnic": "463-123-4447",
+        "phone": "1-463-123-4447"
+    },
+    {
+        "id": 4,
+        "name": "Patricia Lebsack",
+        "username": "Patricia",
+        "email": "patricia.oconner@gmail.biz",
+        "address": {
+            "street": "Hoeger Mall",
+            "suite": "Apt. 692",
+            "city": "South Elvis"
+        },
+        "age": "25",
+        "cnic": "493-170-9623",
+        "phone": "493-170-9623 x156"
+    },
+    {
+        "id": 5,
+        "name": "Chelsey Dietrich",
+        "username": "Chelsey",
+        "email": "chelsey@gmail.biz",
+        "address": {
+            "street": "Skiles Walks",
+            "suite": "Suite 351",
+            "city": "Roscoeview"
+        },
+        "age": "27",
+        "cnic": "954-1289-9623",
+        "phone": "(254)954-1289"
+    }
+]

@@ -1,0 +1,240 @@
+ <html>
+
+  <head>
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <script src="angular.min.js"></script>
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+  </head>
+  <body ng-app="EmployeeDashboard" ng-controller="myController">
+
+    <div class="container-fluid">
+      <br />
+      <h2>JSON Placeholder Posts Data</h2>
+      <br />
+      <div class="row">
+        <div class="col-7">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#myModal"
+            id="btnEmpty"
+            ng-click="displayForAdd()"> Add New Record </button> <br /><br />
+
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">USER ID</th>
+                <th scope="col">POST ID</th>
+                <th scope="col">TITLE</th>
+                <th scope="col">BODY</th>
+                <th scope="col">OPERATIONS</th>
+              </tr>
+            </thead>
+            <tbody id="tabcontent">
+              <tr ng-repeat="x in data">
+                <td>{{ x.userId }}</td>
+                <td>{{ x.id }}</td>
+                <td>{{ x.title }}</td>
+                <td>{{ x.body }}</td>
+                <td> 
+                  <a href="#" data-toggle="modal" data-target="#myModal" ng-click="displayForUpdate(x)"> Edit </a> | 
+                  <a href="#" data-toggle="modal" data-target="#myModal" ng-click="displayForRemove(x)"> Delete </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-5">
+          <textarea id="myTextarea" cols="90" rows="40"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal-dialog">
+        <div class="modal-content"
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel"> {{ operation }} </h4>
+            <button type="button" class="close" data-dismiss="modal"> × </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="Name">User ID</label>
+                <input type="text" class="form-control" ng-model="Post_UserID" placeholder="User ID" />
+              </div>
+
+              <div class="form-group">
+                <label for="Name">POST ID</label>
+                <input type="text" class="form-control" ng-model="Post_ID" placeholder="Post ID" />
+              </div>
+              <div class="form-group">
+                <label for="Name">Post Title</label>
+                <input type="text" class="form-control" ng-model="Post_Title" placeholder="Title" />
+              </div>
+
+              <div class="form-group">
+                <label for="Name">Post Body</label>
+                <input type="text" class="form-control" ng-model="Post_Body" placeholder="Text" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-target="myModal" data-dismiss="modal" 
+                    ng-click="addNewRecord()" id="btnAdd" > Add </button>
+
+            <button type="button" class="btn btn-danger" data-bind="myModal" data-dismiss="modal" 
+                    ng-click="deleteRecord()" id="btnDelete" > Delete </button>
+            
+            <button  type="button" class="btn btn-primary" data-bind="myModal" data-dismiss="modal"
+                     ng-click="updateRecord()" id="btnUpdate" > Update </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var myApp = angular.module("EmployeeDashboard", []);
+      myApp.controller("myController", function ($scope, $http) {
+        
+        $scope.displayForAdd = function () {
+          $scope.operation = "Add New Record";
+          $scope.Post_UserID = "";
+          $scope.Post_ID = "";
+          $scope.Post_Title = "";
+          $scope.Post_Body = "";
+          $("#btnDelete").hide();
+          $("#btnUpdate").hide();
+          $("#btnAdd").show();
+        };
+
+        $scope.displayForUpdate = function (value) {
+          $scope.operation = "Update Record";
+          $scope.Post_UserID = value.userId;
+          $scope.Post_ID = value.id;
+          $scope.Post_Title = value.title;
+          $scope.Post_Body = value.body;
+          $("#btnDelete").hide();
+          $("#btnAdd").hide();
+          $("#btnUpdate").show();
+        };
+        
+        $scope.displayForRemove = function (value) {
+          $scope.operation = "Remove Record";
+          $scope.Post_UserID = value.userId;
+          $scope.Post_ID = value.id;
+          $scope.Post_Title = value.title;
+          $scope.Post_Body = value.body;
+          $("#btnUpdate").hide();
+          $("#btnAdd").hide();
+          $("#btnDelete").show();
+        };
+
+        $scope.addNewRecord = function () {
+          var post = {
+            userId: $scope.Post_UserID,
+            id: $scope.Post_ID,
+            title: $scope.Post_Title,
+            body: $scope.Post_Body,
+          };
+          $http({
+            method: "POST", //request message will not be visible in url
+            url: "https://jsonplaceholder.typicode.com/posts/",
+            data: post,
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }).then(
+            function (response) {
+              //on success it returns all records
+              console.log(response.data);
+              //   alert(JSON.stringify(response));
+              var textareaJson = JSON.stringify(response, undefined, 10);
+              $("#myTextarea").text(textareaJson);
+            },
+            function (error) {
+              //on fail
+              $scope.error = error.status;
+            }
+          ); //close then
+        };
+
+        $scope.deleteRecord = function () {
+          $http({
+            method: "Delete", //request message will not be visible in url
+            url: "https://jsonplaceholder.typicode.com/posts/" + $scope.Post_ID,
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }).then(
+            function (response) {
+              //on success it returns all records
+              console.log(response);
+              //   alert(JSON.stringify(response));
+              var textareaJson = JSON.stringify(response, undefined, 10);
+              $("#myTextarea").text(textareaJson);
+            },
+            function (error) {
+              //on fail
+              $scope.error = error.status;
+            }
+          ); //close then
+        };
+        
+        $scope.updateRecord = function () {
+          var post = {
+            userId: $scope.Post_UserID,
+            id: $scope.Post_ID,
+            title: $scope.Post_Title,
+            body: $scope.Post_Body,
+          };
+
+          $http({
+            method: "Put", //request message will not be visible in url
+            url: "https://jsonplaceholder.typicode.com/posts/" + $scope.Post_ID,
+            data: post,
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }).then(
+            function (response) {
+              //on success it returns all records
+              console.log(response);
+              alert(JSON.stringify(response.data));
+              var textareaJson = JSON.stringify(response, undefined, 10);
+              $("#myTextarea").text(textareaJson);
+            },
+            function (error) {
+              //on fail
+              $scope.error = error.status;
+            }
+          ); //close then
+        };
+
+        $http({
+          method: "Get", //request message will not be visible in url
+          url: "https://jsonplaceholder.typicode.com/posts/",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }).then(
+          function (response) {
+            var textareaJson = JSON.stringify(response, undefined, 10);
+            $("#myTextarea").text(textareaJson);
+            //on success it returns all records
+            $scope.data = response.data;
+          },
+          function (error) {
+            //on fail
+            $scope.error = error.status;
+          }
+        ); //close then
+
+      }); //myApp.controller scope ends here
+    </script>
+  </body>
+
+</html>
